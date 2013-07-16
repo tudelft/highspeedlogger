@@ -1,0 +1,1 @@
+cmake -G "Visual Studio 11 Win64"  -H. -B./build_vs2012_64
