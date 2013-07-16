@@ -1,0 +1,55 @@
+Designator Footprint               Mid X         Mid Y         Ref X         Ref Y         Pad X         Pad Y TB      Rotation Comment        
+
+C2         V0402                 3934mil       2557mil       3934mil       2557mil   3950.732mil       2557mil  T        180.00 Cap            
+C1         V0402                 3919mil       2358mil       3919mil       2358mil   3935.732mil       2358mil  T        180.00 Cap            
+U2         SOT-23-5              3953mil       2643mil       3953mil       2643mil   3915.598mil   2600.677mil  T        360.00 LVDS RECVR FIN1002M5X
+U1         SOT-23-5              3938mil       2444mil       3938mil       2444mil   3900.598mil   2401.677mil  T        360.00 LVDS DRVR FIN1001M5X
+UART3      5_pins_picoblade_1,25_mm_pitch,_right-angle_SMT_-_duplicate   4110.118mil   2550.181mil       4055mil       2599mil   4164.252mil   2350.968mil  T         90.00 0533980571     
+C12        V0402                 3605mil       2442mil       3605mil       2442mil   3621.732mil       2442mil  T        180.00 Cap            
+C7         V0402                 3605mil       2413mil       3605mil       2413mil   3621.732mil       2413mil  T        180.00 Cap            
+JTAG       FTSH-105-01-L-DV-K-TR   3048.803mil       3070mil   3048.803mil       3070mil   2968.882mil       3170mil  T         90.00 dual-row 10 pin connector
+R16        V0402RES              3451mil       2999mil       3451mil       2999mil       3451mil   3015.732mil  T        270.00 Place close to MCU
+U4         MF05A_N           3998.756mil   3104.401mil   3998.756mil   3104.402mil       4046mil       3067mil  T        180.00 LP2992AIM5-3.3 
+C17        V0402                 4085mil       3085mil       4085mil       3085mil       4085mil   3101.732mil  T        270.00 Cap            
+C16        V0402                 3972mil       3188mil       3972mil       3188mil   3955.268mil       3188mil  T        360.00 Cap            
+C15        0805                  3989mil       2992mil       3989mil       2992mil   3951.599mil       2992mil  T        360.00 TAJR475K006RNJ 
+X1         CFPX-5            3090.384mil   2754.252mil   3090.384mil   2754.252mil    3121.88mil   2710.945mil  T         90.00 3SMXB          
+R15        V0402RES              3480mil       2999mil       3480mil       2999mil       3480mil   3015.732mil  T        270.00 Place close to MCU
+R14        V0402RES              3509mil       2999mil       3509mil       2999mil       3509mil   3015.732mil  T        270.00 Place close to MCU
+R13        V0402RES              3538mil       2999mil       3538mil       2999mil       3538mil   3015.732mil  T        270.00 Place close to MCU
+R12        V0402RES              3728mil       2688mil       3728mil       2688mil   3744.732mil       2688mil  T        180.00 Place close to MCU
+R11        V0402RES              3728mil       2658mil       3728mil       2658mil   3744.732mil       2658mil  T        180.00 Place close to MCU
+R10        V0402RES              3342mil       2961mil       3342mil       2961mil   3325.268mil       2961mil  T        360.00 Res3           
+R9         V0402RES              3504mil       2386mil       3504mil       2386mil       3504mil   2402.732mil  T        270.00 Res3           
+R8         V0402RES              3096mil       2573mil       3096mil       2573mil       3096mil   2556.268mil  T         90.00 Res3           
+R5         V0402RES              3158mil       2510mil       3158mil       2510mil   3174.732mil       2510mil  T        180.00 Res3           
+U3         LQFP64                3415mil       2685mil       3415mil       2685mil   3190.591mil   2832.638mil  T          0.00 STM32F40x-RG_Dirk
+D5         SOD-323               4139mil       2958mil       4139mil       2958mil       4139mil    2911.74mil  T        270.00 D Schottky     
+C11        V0402                 3285mil       2402mil       3285mil       2402mil   3268.268mil       2402mil  T        360.00 Cap            
+C10        V0402                 3277mil       2961mil       3277mil       2961mil   3293.732mil       2961mil  T        180.00 Cap            
+C9         V0402                 3065mil       2855mil       3065mil       2855mil   3048.268mil       2855mil  T        360.00 Cap            
+C8         V0402                 3106mil       2662mil       3106mil       2662mil   3089.268mil       2662mil  T        360.00 Cap            
+C6         V0402                 3714mil       2813mil       3714mil       2813mil   3730.732mil       2813mil  T        180.00 Cap            
+C5         V0402                 3143mil       2606mil       3143mil       2606mil       3143mil   2622.732mil  T        270.00 Cap            
+C4         V0603                 3657mil       3161mil       3657mil       3161mil       3657mil   3132.457mil  T         90.00 Cap            
+C3         V0402                 3061mil       2573mil       3061mil       2573mil       3061mil   2589.732mil  T        270.00 Cap            
+R4         V0402RES              2901mil       2674mil       2901mil       2674mil       2901mil   2690.732mil  T        270.00 Res3           
+R3         V0402RES              2924mil       2603mil       2924mil       2603mil       2924mil   2619.732mil  T        270.00 Res3           
+R2         V0402RES              2972mil       2603mil       2972mil       2603mil       2972mil   2619.732mil  T        270.00 Res3           
+R1         V0402RES              2949mil       2674mil       2949mil       2674mil       2949mil   2690.732mil  T        270.00 Res3           
+D4         KP-1608SURC_G     2901.501mil       2386mil   2901.501mil       2386mil   2901.501mil    2353.52mil  T         90.00 YELLOW         
+D3         KP-1608SURC_Y     2944.334mil       2386mil   2944.334mil       2386mil   2944.334mil    2353.52mil  T         90.00 GREEN          
+D2         KP-1608SURC_B         3030mil       2386mil       3030mil       2386mil       3030mil    2353.52mil  T         90.00 RED            
+D1         KP-1608SURC_R     2987.167mil       2386mil   2987.167mil       2386mil   2987.167mil    2353.52mil  T         90.00 BLUE           
+SW1        TACTILE-B3U-1000P       3134mil       2495mil       3134mil       2495mil       3134mil   2561.929mil  B        270.00 Tactile OMRON B3U-1000P
+C13        V0603                 3814mil       2989mil       3814mil       2989mil       3814mil   2960.457mil  B         90.00 Cap            
+C14        V0402                 3768mil       2977mil       3768mil       2977mil       3768mil   2960.268mil  B         90.00 Cap            
+SPI2       5_pins_picoblade_1,25_mm_pitch,_right-angle_SMT_-_duplicate   3387.819mil   2433.882mil       3339mil       2489mil   3587.032mil   2379.748mil  B        180.00 0533980571     
+USB        USB/SM0.8-6H5     4061.181mil       2785mil       4260mil       2785mil   3950.945mil   2847.992mil  B        360.00 0481900001     
+SD1        MICROSD-card      3404.847mil    2894.26mil       3065mil       2934mil   3700.402mil   2725.362mil  B         90.00 SD Slot        
+VIN        3_pins_picoblade_1,25_mm_pitch,_right-angle_SMT       4033mil       3110mil       4033mil       3110mil   4182.606mil   3164.134mil  B        360.00 53398-0371     
+SPI1       5_pins_picoblade_1,25_mm_pitch,_right-angle_SMT_-_duplicate   3863.819mil   2433.882mil       3815mil       2489mil   4063.032mil   2379.748mil  B        180.00 0533980571     
+UART2      3_pins_picoblade_1,25_mm_pitch,_right-angle_SMT       2978mil       2500mil       2978mil       2500mil   2923.866mil   2649.606mil  B         90.00 53398-0371     
+R7         V0402RES              3866mil       2785mil       3866mil       2785mil   3849.268mil       2785mil  B        360.00 Res3           
+R6         V0402RES              3867mil       2817mil       3867mil       2817mil   3850.268mil       2817mil  B        360.00 Res3           
+
