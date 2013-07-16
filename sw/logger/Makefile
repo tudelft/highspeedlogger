@@ -4,6 +4,7 @@ EXECUTABLE    = $(TARGET).elf
 BIN_IMAGE     = $(TARGET).bin
 
 CROSS        ?= ~/sat/bin/arm-none-eabi-
+#CROSS       ?= /opt/paparazzi/arm-multilib/bin/arm-none-eabi-
 
 CC            = $(CROSS)gcc
 GDB           = $(CROSS)gdb
