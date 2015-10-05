@@ -32,7 +32,7 @@ uint8_t dmaIrqChannAddr[4] = { DMA2_Stream0_IRQn,
 
 
 /// END-USER CONFIG ////////////////
-uint8_t inputPort = PORT_SPI1;
+uint8_t inputPort = PORT_SPI2;
 //uint8_t inputPort = PORT_UART2;
 uint8_t rewriteAttempts = 1;
 uint32_t boolSettings = 0x00000001;
@@ -45,7 +45,13 @@ struct spiPeriphConfig   configSpi1 =
   SPI_CPHA_2EDGE,
   SPI_FIRSTB_MSB
 };
-struct spiPeriphConfig   configSpi2 = {SPI_DATASIZE_8, SPI_CPOL_LOW, SPI_CPHA_1EDGE, SPI_FIRSTB_MSB};
+struct spiPeriphConfig   configSpi2 =
+{
+  SPI_DATASIZE_8,
+  SPI_CPOL_HIGH,
+  SPI_CPHA_2EDGE,
+  SPI_FIRSTB_MSB
+};
 struct usartPeriphConfig configUsart2 = {230400};
 struct usartPeriphConfig configUsart3 = {230400};
 
