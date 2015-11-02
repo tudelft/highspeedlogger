@@ -17,3 +17,4 @@
 *.app
 
 tools/build
+/hw/*.Harness

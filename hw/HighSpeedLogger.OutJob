@@ -24,7 +24,7 @@ OutputDocumentPath1=
 OutputVariantName1=
 OutputEnabled1=1
 OutputEnabled1_OutputMedium1=0
-OutputEnabled1_OutputMedium2=3
+OutputEnabled1_OutputMedium2=5
 OutputEnabled1_OutputMedium3=0
 OutputEnabled1_OutputMedium4=0
 OutputDefault1=0
@@ -115,7 +115,7 @@ OutputDocumentPath6=
 OutputVariantName6=
 OutputEnabled6=1
 OutputEnabled6_OutputMedium1=0
-OutputEnabled6_OutputMedium2=4
+OutputEnabled6_OutputMedium2=6
 OutputEnabled6_OutputMedium3=0
 OutputEnabled6_OutputMedium4=0
 OutputDefault6=0
@@ -132,6 +132,79 @@ Configuration6_Name5=SortOrder
 Configuration6_Item5=Designator=Up
 Configuration6_Name6=VisibleOrder
 Configuration6_Item6=Quantity=100|Designator=100|Value=100|Footprint=100|Comment=100|Description=100|Farnell=100
+OutputType7=Gerber
+OutputName7=Gerber Files
+OutputDocumentPath7=PCB3.PcbDoc
+OutputVariantName7=
+OutputEnabled7=0
+OutputEnabled7_OutputMedium1=0
+OutputEnabled7_OutputMedium2=0
+OutputEnabled7_OutputMedium3=0
+OutputEnabled7_OutputMedium4=1
+OutputDefault7=0
+Configuration7_Name1=OutputConfigurationParameter1
+Configuration7_Item1=AddToAllPlots_Mechanical 1=False|AddToAllPlots_Mechanical 10=False|AddToAllPlots_Mechanical 11=False|AddToAllPlots_Mechanical 12=False|AddToAllPlots_Mechanical 13=False|AddToAllPlots_Mechanical 14=False|AddToAllPlots_Mechanical 15=False|AddToAllPlots_Mechanical 16=False|AddToAllPlots_Mechanical 2=False|AddToAllPlots_Mechanical 3=False|AddToAllPlots_Mechanical 4=False|AddToAllPlots_Mechanical 5=False|AddToAllPlots_Mechanical 6=False|AddToAllPlots_Mechanical 7=False|AddToAllPlots_Mechanical 8=False|AddToAllPlots_Mechanical 9=False|CentrePlots=False|DrillDrawingSymbol=GraphicsSymbol|DrillDrawingSymbolSize=500000|EmbeddedApertures=True|FilmBorderSize=10000000|FilmXSize=200000000|FilmYSize=160000000|FlashAllFills=False|FlashPadShapes=True|G54OnApertureChange=False|GenerateDRCRulesFile=True|GenerateReliefShapes=True|GerberUnit=Imperial|IncludeUnconnectedMidLayerPads=False|LeadingAndTrailingZeroesMode=KeepLeadingAndTrailingZeroes|MaxApertureSize=2500000|MinusApertureTolerance=50|MirrorBottomLayerPlot=False|MirrorBottomOverlayPlot=False|MirrorBottomPadMasterPlot=False|MirrorBottomPastePlot=False|MirrorBottomSolderPlot=False|MirrorDrillDrawingPlots=False|MirrorDrillGuidePlots=False|MirrorInternalPlane10Plot=False|MirrorInternalPlane11Plot=False|MirrorInternalPlane12Plot=False|MirrorInternalPlane13Plot=False|MirrorInternalPlane14Plot=False|MirrorInternalPlane15Plot=False|MirrorInternalPlane16Plot=False|MirrorInternalPlane1Plot=False|MirrorInternalPlane2Plot=False|MirrorInternalPlane3Plot=False|MirrorInternalPlane4Plot=False|MirrorInternalPlane5Plot=False|MirrorInternalPlane6Plot=False|MirrorInternalPlane7Plot=False|MirrorInternalPlane8Plot=False|MirrorInternalPlane9Plot=False|MirrorKeepOutLayerPlot=False|MirrorMechanical10Plot=False|MirrorMechanical11Plot=False|MirrorMechanical12Plot=False|MirrorMechanical13Plot=False|MirrorMechanical14Plot=False|MirrorMechanical15Plot=False|MirrorMechanical16Plot=False|MirrorMechanical1Plot=False|MirrorMechanical2Plot=False|MirrorMechanical3Plot=False|MirrorMechanical4Plot=False|MirrorMechanical5Plot=False|MirrorMechanical6Plot=False|MirrorMechanical7Plot=False|MirrorMechanical8Plot=False|MirrorMechanical9Plot=False|MirrorMidLayer10Plot=False|MirrorMidLayer11Plot=False|MirrorMidLayer12Plot=False|MirrorMidLayer13Plot=False|MirrorMidLayer14Plot=False|MirrorMidLayer15Plot=False|MirrorMidLayer16Plot=False|MirrorMidLayer17Plot=False|MirrorMidLayer18Plot=False|MirrorMidLayer19Plot=False|MirrorMidLayer1Plot=False|MirrorMidLayer20Plot=False|MirrorMidLayer21Plot=False|MirrorMidLayer22Plot=False|MirrorMidLayer23Plot=False|MirrorMidLayer24Plot=False|MirrorMidLayer25Plot=False|MirrorMidLayer26Plot=False|MirrorMidLayer27Plot=False|MirrorMidLayer28Plot=False|MirrorMidLayer29Plot=False|MirrorMidLayer2Plot=False|MirrorMidLayer30Plot=False|MirrorMidLayer3Plot=False|MirrorMidLayer4Plot=False|MirrorMidLayer5Plot=False|MirrorMidLayer6Plot=False|MirrorMidLayer7Plot=False|MirrorMidLayer8Plot=False|MirrorMidLayer9Plot=False|MirrorTopLayerPlot=False|MirrorTopOverlayPlot=False|MirrorTopPadMasterPlot=False|MirrorTopPastePlot=False|MirrorTopSolderPlot=False|NumberOfDecimals=5|OptimizeChangeLocationCommands=True|OriginPosition=Relative|Panelize=False|PlotBottomLayerPlot=True|PlotBottomOverlayPlot=True|PlotBottomPadMasterPlot=False|PlotBottomPastePlot=False|PlotBottomSolderPlot=True|PlotInternalPlane10Plot=False|PlotInternalPlane11Plot=False|PlotInternalPlane12Plot=False|PlotInternalPlane13Plot=False|PlotInternalPlane14Plot=False|PlotInternalPlane15Plot=False|PlotInternalPlane16Plot=False|PlotInternalPlane1Plot=False|PlotInternalPlane2Plot=False|PlotInternalPlane3Plot=False|PlotInternalPlane4Plot=False|PlotInternalPlane5Plot=False|PlotInternalPlane6Plot=False|PlotInternalPlane7Plot=False|PlotInternalPlane8Plot=False|PlotInternalPlane9Plot=False|PlotKeepOutLayerPlot=True|PlotMechanical10Plot=False|PlotMechanical11Plot=False|PlotMechanical12Plot=False|PlotMechanical13Plot=False|PlotMechanical14Plot=False|PlotMechanical15Plot=False|PlotMechanical16Plot=False|PlotMechanical1Plot=False|PlotMechanical2Plot=False|PlotMechanical3Plot=False|PlotMechanical4Plot=False|PlotMechanical5Plot=False|PlotMechanical6Plot=False|PlotMechanical7Plot=False|PlotMechanical8Plot=False|PlotMechanical9Plot=False|PlotMidLayer10Plot=False|PlotMidLayer11Plot=False|PlotMidLayer12Plot=False|PlotMidLayer13Plot=False|PlotMidLayer14Plot=False|PlotMidLayer15Plot=False|PlotMidLayer16Plot=False|PlotMidLayer17Plot=False|PlotMidLayer18Plot=False|PlotMidLayer19Plot=False|PlotMidLayer1Plot=False|PlotMidLayer20Plot=False|PlotMidLayer21Plot=False|PlotMidLayer22Plot=False|PlotMidLayer23Plot=False|PlotMidLayer24Plot=False|PlotMidLayer25Plot=False|PlotMidLayer26Plot=False|PlotMidLayer27Plot=False|PlotMidLayer28Plot=False|PlotMidLayer29Plot=False|PlotMidLayer2Plot=False|PlotMidLayer30Plot=False|PlotMidLayer3Plot=False|PlotMidLayer4Plot=False|PlotMidLayer5Plot=False|PlotMidLayer6Plot=False|PlotMidLayer7Plot=False|PlotMidLayer8Plot=False|PlotMidLayer9Plot=False|PlotPositivePlaneLayers=False|PlotTopLayerPlot=True|PlotTopOverlayPlot=True|PlotTopPadMasterPlot=False|PlotTopPastePlot=False|PlotTopSolderPlot=True|PlotUsedDrillDrawingLayerPairs=True|PlotUsedDrillGuideLayerPairs=False|PlusApertureTolerance=50|Record=GerberView|SoftwareArcs=False|Sorted=False
+OutputType8=NC Drill
+OutputName8=NC Drill Files
+OutputDocumentPath8=PCB3.PcbDoc
+OutputVariantName8=
+OutputEnabled8=0
+OutputEnabled8_OutputMedium1=0
+OutputEnabled8_OutputMedium2=0
+OutputEnabled8_OutputMedium3=0
+OutputEnabled8_OutputMedium4=2
+OutputDefault8=0
+Configuration8_Name1=OutputConfigurationParameter1
+Configuration8_Item1=BoardEdgeRoutToolDia=2000000|GenerateBoardEdgeRout=False|GenerateDrilledSlotsG85=False|GenerateSeparatePlatedNonPlatedFiles=False|NumberOfDecimals=5|NumberOfUnits=2|OptimizeChangeLocationCommands=True|OriginPosition=Relative|Record=DrillView|Units=Imperial|ZeroesMode=KeepLeadingAndTrailingZeroes
+OutputType9=PCB 3D Print
+OutputName9=Copy of Copy of PCB 3D Prints
+OutputDocumentPath9=PCB4.PcbDoc
+OutputVariantName9=
+OutputEnabled9=1
+OutputEnabled9_OutputMedium1=0
+OutputEnabled9_OutputMedium2=3
+OutputEnabled9_OutputMedium3=0
+OutputEnabled9_OutputMedium4=0
+OutputDefault9=0
+PageOptions9=Record=PageOptions|CenterHorizontal=True|CenterVertical=True|PrintScale=5.25|XCorrection=1.00|YCorrection=1.00|PrintKind=1|BorderSize=5000000|LeftOffset=0|BottomOffset=0|Orientation=2|PaperLength=1000|PaperWidth=1000|Scale=100|PaperSource=7|PrintQuality=-4|MediaType=1|DitherType=10|PaperKind=A4|PrintScaleMode=1
+Configuration9_Name1=OutputConfigurationParameter1
+Configuration9_Item1=Record=Pcb3DPrintView|ResX=75|ResY=75|ViewX=15748032|ViewY=15748031|LookAtX=35433072|LookAtY=27755906|LookAtZ=-1000|QuatX=0|QuatY=0|QuatZ=0|QuatW=1|Zoom=4.85775015301913E-5|UnitsPercent=True|UnitsDPI=True|LockResAspect=True|ViewConfigType=.config_3d|CustomCamera=False|ViewFromTop=True|ViewConfig=
+OutputType10=PCB 3D Print
+OutputName10=Copy of Copy of Copy of PCB 3D Prints
+OutputDocumentPath10=PCB5.PcbDoc
+OutputVariantName10=
+OutputEnabled10=1
+OutputEnabled10_OutputMedium1=0
+OutputEnabled10_OutputMedium2=4
+OutputEnabled10_OutputMedium3=0
+OutputEnabled10_OutputMedium4=0
+OutputDefault10=0
+PageOptions10=Record=PageOptions|CenterHorizontal=True|CenterVertical=True|PrintScale=6.23|XCorrection=1.00|YCorrection=1.00|PrintKind=1|BorderSize=5000000|LeftOffset=0|BottomOffset=0|Orientation=2|PaperLength=1000|PaperWidth=1000|Scale=100|PaperSource=7|PrintQuality=-4|MediaType=1|DitherType=10|PaperKind=A4|PrintScaleMode=1
+Configuration10_Name1=OutputConfigurationParameter1
+Configuration10_Item1=Record=Pcb3DPrintView|ResX=75|ResY=75|ViewX=18661417|ViewY=13267717|LookAtX=37677164|LookAtY=27775590|LookAtZ=-1000|QuatX=0|QuatY=0|QuatZ=0|QuatW=1|Zoom=4.88708869213951E-5|UnitsPercent=True|UnitsDPI=True|LockResAspect=True|ViewConfigType=.config_3d|CustomCamera=False|ViewFromTop=True|ViewConfig=
+OutputType11=Pick Place
+OutputName11=Generates pick and place files
+OutputDocumentPath11=PCB3.PcbDoc
+OutputVariantName11=
+OutputEnabled11=0
+OutputEnabled11_OutputMedium1=0
+OutputEnabled11_OutputMedium2=0
+OutputEnabled11_OutputMedium3=0
+OutputEnabled11_OutputMedium4=3
+OutputDefault11=0
+Configuration11_Name1=OutputConfigurationParameter1
+Configuration11_Item1=Record=PickPlaceView|Units=Imperial|GenerateCSVFormat=False|GenerateTextFormat=True
+OutputType12=BOM_PartType
+OutputName12=Copy of Copy of Bill of Materials
+OutputDocumentPath12=
+OutputVariantName12=
+OutputEnabled12=0
+OutputEnabled12_OutputMedium1=0
+OutputEnabled12_OutputMedium2=0
+OutputEnabled12_OutputMedium3=0
+OutputEnabled12_OutputMedium4=0
+OutputDefault12=0
+PageOptions12=Record=PageOptions|CenterHorizontal=True|CenterVertical=True|PrintScale=1.00|XCorrection=1.00|YCorrection=1.00|PrintKind=1|BorderSize=5000000|LeftOffset=0|BottomOffset=0|Orientation=2|PaperLength=1000|PaperWidth=1000|Scale=100|PaperSource=7|PrintQuality=-4|MediaType=1|DitherType=10|PaperKind=A4|PrintScaleMode=1
 
 [PublishSettings]
 PublishMethod2=0
@@ -159,7 +232,7 @@ WebOutputMediumType3=FS
 OutputDirectory3=C:\Users\cdewagter\Desktop\SVN\SmartUAV\Hardware\Electronics\HighSpeedLogger\Project Outputs for HighSpeedLogger\WebOutput
 
 [GeneratedFilesSettings]
-RelativeOutputPath4=
+RelativeOutputPath4=gerber
 OpenOutputs4=0
 AddToProject4=1
 TimestampFolder4=0
