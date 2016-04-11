@@ -66,8 +66,10 @@ void format_disk_raw(char* volume_name)
 
 		if (f!=0)
 		{
+			printf("End of file system found at addr %X: \n",addr);
 			break;
 		}
+		printf("Format succes until %ld: \n",addr);
 
 		addr += BUFF_SIZE;
 	}
