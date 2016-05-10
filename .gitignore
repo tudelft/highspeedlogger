@@ -17,4 +17,6 @@
 *.app
 
 tools/build
+tools/bin
 /hw/*.Harness
+sd_log_*.bin

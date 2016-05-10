@@ -106,13 +106,13 @@ void read_disk_raw(char* volume_name, unsigned long disk_size)
 		int f = feof(volume);
 		int e = ferror(volume);
 
-		printf("\nFailed to read (read: %d) feof %d, ferror %d \n", r, f, e);
+		printf("\nFailed to read (read: %lu) feof %d, ferror %d \n", r, f, e);
 
 		fclose(volume);
 		return;
 	}
 
-	printf("HEADER DATA @ %X : ", addr);
+	printf("HEADER DATA @ %08lX : ", addr);
 	for (int i=0;i<BLOCK_SIZE;i++)
 	{
 		unsigned char b = bufheader[i];
@@ -129,7 +129,7 @@ void read_disk_raw(char* volume_name, unsigned long disk_size)
 
 
 	if (addr_log_end < 0x4000) {
-		printf("No logs found: %d %08X\n", nr_of_logs, addr_log_end);
+		printf("No logs found: %d %04X\n", nr_of_logs, addr_log_end);
 		fclose(volume);
 		return;
 	} else {
@@ -139,11 +139,11 @@ void read_disk_raw(char* volume_name, unsigned long disk_size)
 	for (uint8_t log=0; log < nr_of_logs; log++) {
 		uint32_t addr_log_start = big_endian( bufheader + 5 + 12*log );
 		uint32_t log_size = big_endian( bufheader + 5 + 4 + 12*log );
-		printf("Log %04d,\t0x%08X\t0x%08X\n", log, addr_log_start, log_size);
+		printf("Log %04d,\t0x%04X\t0x%04X\t0x%04X\n", log, addr_log_start, log_size, (addr_log_start+log_size));
 
 		addr = addr_log_start * BLOCK_SIZE;
 
-		printf("FSeek to %08X\n",addr);
+		printf("FSeek to %08lX\n",addr);
 
 		int err = 0;
 		if(fseek(volume, addr, SEEK_SET) != 0)
@@ -168,7 +168,7 @@ void read_disk_raw(char* volume_name, unsigned long disk_size)
 			size_t rdb = readbytes;
 			size_t r = fread(buf, 1, BLOCK_SIZE, volume);
 
-			printf("Read %08X %08X %d %d %d %d\r",addr, log_size, readbytes, r, err, errno);
+			printf("Read %08lX %04X %d %lu %d %d\r", addr, log_size, readbytes, r, err, errno);
 
 			readbytes = r;
 			fwrite(buf,1,readbytes,of);
