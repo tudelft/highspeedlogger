@@ -74,6 +74,7 @@ void read_disk_raw(char* volume_name, unsigned long disk_size)
     FILE *volume;
     int k = 0;
     uint8_t buf[BUFF_SIZE] = {0};
+    uint8_t bufheader[BUFF_SIZE] = {0};
   
     volume = fopen(volume_name, "r+b");
     if(!volume)
@@ -104,7 +105,7 @@ void read_disk_raw(char* volume_name, unsigned long disk_size)
 		return;
 	}
  
-	size_t r = fread(buf, 1, BLOCK_SIZE, volume);
+	size_t r = fread(bufheader, 1, BLOCK_SIZE, volume);
 	if (r <= 0)
 	{
 		int f = feof(volume);
@@ -119,7 +120,7 @@ void read_disk_raw(char* volume_name, unsigned long disk_size)
 	printf("%X : ", addr);
 	for (int i=0;i<BLOCK_SIZE;i++)
 	{
-		unsigned char b = buf[i];
+		unsigned char b = bufheader[i];
 		printf("%X, ", b);
 	}
 	printf("\n");
@@ -127,8 +128,8 @@ void read_disk_raw(char* volume_name, unsigned long disk_size)
 
 	unsigned long log_size = 0;
 
-	uint32_t addr_log_end = big_endian(buf+0);
-	uint8_t nr_of_logs = buf[4];
+	uint32_t addr_log_end = big_endian(bufheader+0);
+	uint8_t nr_of_logs = bufheader[4];
 
 
 
@@ -141,8 +142,8 @@ void read_disk_raw(char* volume_name, unsigned long disk_size)
 	}
 
 	for (uint8_t log=0; log < nr_of_logs; log++) {
-		uint32_t addr_log_start = big_endian( buf + 5 + 12*log );
-		uint32_t log_size = big_endian( buf + 5 + 4 + 12*log );
+		uint32_t addr_log_start = big_endian( bufheader + 5 + 12*log );
+		uint32_t log_size = big_endian( bufheader + 5 + 4 + 12*log );
 		printf("Log %04d,\t0x%08X\t0x%08X\n", log, addr_log_start, log_size);
 
 		addr = addr_log_start * BLOCK_SIZE;
@@ -175,12 +176,9 @@ void read_disk_raw(char* volume_name, unsigned long disk_size)
 			printf("Read %08X %08X %d %d %d %d\r",addr, log_size, readbytes, r, err, errno);
 
 			readbytes = r;
-			if (readbytes > log_size)
-				readbytes = log_size;
-
 			fwrite(buf,1,readbytes,of);
 
-			log_size -= readbytes;
+			log_size --;
 		}
 
 		fclose(of);
