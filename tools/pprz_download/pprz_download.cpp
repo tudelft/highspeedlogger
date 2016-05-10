@@ -11,24 +11,11 @@
 // SDIO Settings
 #define BLOCK_SIZE              512   /* SD card block size in Bytes (512 for a normal SD card) */
 
-// Logger settings
-#define RX_BUFFER_NUM_BLOCKS    20 /* 20 blocks * 512 = 10 KB RAM required per buffer*/
 /**************   END OF SETTINGS   *****************/
 
-#define BUFF_SIZE  (BLOCK_SIZE*RX_BUFFER_NUM_BLOCKS)
+#define BUFF_SIZE  (BLOCK_SIZE)
 
 void read_disk_raw(char* volume_name, unsigned long disk_size);
-
-inline void wordswap(int32_t *i)
-{
-	uint8_t *p = (uint8_t*) i;
-	uint8_t tmp = p[0];
-	p[0] = p[1];
-	p[1] = tmp;
-	tmp = p[2];
-	p[2] = p[3];
-	p[3] = tmp;
-}
 
 int main(int argc, char** argv)
 {
@@ -104,20 +91,27 @@ void read_disk_raw(char* volume_name, unsigned long disk_size)
 		fclose(volume);
 		return;
 	}
- 
-	size_t r = fread(bufheader, 1, BLOCK_SIZE, volume);
+
+	size_t r = 0;
+	int cnti = 0;
+	do {
+		r = fread(bufheader, 1, BLOCK_SIZE, volume);
+		printf("Trying to read .... \r");
+		cnti++;
+	} while ((cnti<20000) && (r <=0));
+
 	if (r <= 0)
 	{
 		int f = feof(volume);
 		int e = ferror(volume);
 
-		printf("Failed to read (read: %d) feof %d, ferror %d \n", r, f, e);
+		printf("\nFailed to read (read: %d) feof %d, ferror %d \n", r, f, e);
 
 		fclose(volume);
 		return;
 	}
 
-	printf("%X : ", addr);
+	printf("HEADER DATA @ %X : ", addr);
 	for (int i=0;i<BLOCK_SIZE;i++)
 	{
 		unsigned char b = bufheader[i];
