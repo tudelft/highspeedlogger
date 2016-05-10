@@ -16,6 +16,7 @@ set ( EXECUTABLE_OUTPUT_PATH "${highspeedlogger_SOURCE_DIR}/bin" )
 
 
 add_subdirectory (download)
+add_subdirectory (pprz_download)
 add_subdirectory (convert)
 add_subdirectory (format)
 #add_subdirectory (xsens)
