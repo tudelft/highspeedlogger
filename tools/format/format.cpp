@@ -24,7 +24,7 @@ void format_disk_raw(char* volume_name)
 {
     FILE *volume;
     int k = 0;
-    char buf[BUFF_SIZE] = {0};
+    char buf[BUFF_SIZE] = {0, 0, 0, 0, 0};
   
 	int i;
 
@@ -47,7 +47,23 @@ void format_disk_raw(char* volume_name)
 
 	printf("\nFormatting entire SDCard '%s': \n...\r",volume_name);
 
+
 	unsigned long addr = 0;
+
+	addr= 0x2000 * BLOCK_SIZE;
+
+	//printf("%u: ", addr);
+	if(fseek(volume, addr, SEEK_SET) != 0)
+	{
+		printf("Cant move to sector\n");
+		fclose(volume);
+		return;
+	}
+
+	fwrite(buf, 5, 1, volume);
+
+
+	addr = 0;
     // read what is in sector and put in buf //
 	while (addr < disk_size)
 	{
