@@ -49,6 +49,129 @@ int main(int argc, char** argv)
 	exit(-1);
 }
 
+#ifndef TRANSPORT_PAYLOAD_LEN
+#define TRANSPORT_PAYLOAD_LEN 256
+#endif
+
+/** Generic reception transport header
+ */
+struct transport_rx {
+  uint8_t payload[TRANSPORT_PAYLOAD_LEN]; ///< payload buffer
+  volatile uint8_t payload_len;           ///< payload buffer length
+  volatile bool msg_received;             ///< message received flag
+  uint8_t ovrn, error;                    ///< overrun and error flags
+};
+
+/** Data type
+ */
+enum TransportDataType {
+  DL_TYPE_ARRAY_LENGTH,
+  DL_TYPE_CHAR,
+  DL_TYPE_UINT8,
+  DL_TYPE_INT8,
+  DL_TYPE_UINT16,
+  DL_TYPE_INT16,
+  DL_TYPE_UINT32,
+  DL_TYPE_INT32,
+  DL_TYPE_UINT64,
+  DL_TYPE_INT64,
+  DL_TYPE_FLOAT,
+  DL_TYPE_DOUBLE,
+  DL_TYPE_TIMESTAMP
+};
+
+/** Data format (scalar or array)
+ */
+enum TransportDataFormat {
+  DL_FORMAT_SCALAR,
+  DL_FORMAT_ARRAY
+};
+
+
+/** Generic transmission transport header
+ */
+struct transport_tx {
+  void *impl;                                     ///< pointer to parent implementation
+};
+
+struct pprz_transport {
+  // generic reception interface
+  struct transport_rx trans_rx;
+  // specific pprz transport_rx variables
+  uint8_t status;
+  uint8_t payload_idx;
+  uint8_t ck_a_rx, ck_b_rx;
+  // generic transmission interface
+  struct transport_tx trans_tx;
+  // specific pprz transport_tx variables
+  uint8_t ck_a_tx, ck_b_tx;
+};
+
+
+
+// Parsing function, only needed for modules doing their own parsing
+// without using the pprz_check_and_parse function
+extern bool parse_pprz(struct pprz_transport *t, uint8_t c);
+
+// PPRZ parsing state machine
+#define UNINIT      0
+#define GOT_STX     1
+#define GOT_LENGTH  2
+#define GOT_PAYLOAD 3
+#define GOT_CRC1    4
+
+// Start byte
+#define PPRZ_STX  0x99
+	
+// Parsing function
+bool parse_pprz(struct pprz_transport *t, uint8_t c)
+{
+  switch (t->status) {
+    case UNINIT:
+      if (c == PPRZ_STX) {
+        t->status++;
+      }
+      break;
+    case GOT_STX:
+      if (t->trans_rx.msg_received) {
+        t->trans_rx.ovrn++;
+        goto error;
+      }
+      t->trans_rx.payload_len = c - 4; /* Counting STX, LENGTH and CRC1 and CRC2 */
+      t->ck_a_rx = t->ck_b_rx = c;
+      t->status++;
+      t->payload_idx = 0;
+      break;
+    case GOT_LENGTH:
+      t->trans_rx.payload[t->payload_idx] = c;
+      t->ck_a_rx += c; t->ck_b_rx += t->ck_a_rx;
+      t->payload_idx++;
+      if (t->payload_idx == t->trans_rx.payload_len) {
+        t->status++;
+      }
+      break;
+    case GOT_PAYLOAD:
+      if (c != t->ck_a_rx) {
+        goto error;
+      }
+      t->status++;
+      break;
+    case GOT_CRC1:
+      if (c != t->ck_b_rx) {
+        goto error;
+      }
+      t->trans_rx.msg_received = true;
+      goto restart;
+    default:
+      goto error;
+  }
+  return true;
+error:
+  t->trans_rx.error++;
+restart:
+  t->status = UNINIT;
+  return false;
+}
 
 static inline uint32_t big_endian(uint8_t* buf)
 {
@@ -176,11 +299,31 @@ void read_disk_raw(char* volume_name, unsigned long disk_size)
 			log_size --;
 		}
 
+
 		fclose(of);
 		of = 0;
 	}
 
+	// After the last logfile: keep reading untill bad pprzlink parsing fails
+	bool pprz_valid = true;
+	struct pprz_transport pprz;
 
+	char filename[32];
+	sprintf(filename, "sd_log_extra_unclosed.bin", log);
+	of = fopen(filename, "w+b");
+
+	while (pprz_valid)
+	{
+		size_t r = fread(buf, 1, BLOCK_SIZE, volume);
+		for (int i=0; pprz_valid && (i<BLOCK_SIZE); i++)
+		{
+			pprz_valid = parse_pprz(&pprz, buf[i]);
+		}
+		uint32_t readbytes = r;
+		fwrite(buf,1,readbytes,of);
+
+	}
+	fclose(of);
 
     fclose(volume);
  
