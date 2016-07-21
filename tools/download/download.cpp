@@ -9,15 +9,23 @@
 
 /********************  SETTINGS  ********************/
 // SDIO Settings
-#define BLOCK_SIZE              512   /* SD card block size in Bytes (512 for a normal SD card) */
+#define BLOCK_SIZE              512UL   /* SD card block size in Bytes (512 for a normal SD card) */
 
 // Logger settings
-#define RX_BUFFER_NUM_BLOCKS    20 /* 20 blocks * 512 = 10 KB RAM required per buffer*/
+#define RX_BUFFER_NUM_BLOCKS    20UL /* 20 blocks * 512 = 10 KB RAM required per buffer*/
+
+
+// SD Card size
+#define SDCARD_SIZE	(1UL*1024UL*1024UL*1024UL)
+
 /**************   END OF SETTINGS   *****************/
+
+
+
 
 #define BUFF_SIZE  (BLOCK_SIZE*RX_BUFFER_NUM_BLOCKS)
 
-void read_disk_raw(char* volume_name, unsigned long disk_size);
+void read_disk_raw(char* volume_name, uint64_t disk_size);
 
 inline void wordswap(int32_t *i)
 {
@@ -41,7 +49,7 @@ int main(int argc, char** argv)
 
 		if (argc == 2)
 		{
-			read_disk_raw(argv[1], 128UL*1024UL*1024UL);
+			read_disk_raw(argv[1], SDCARD_SIZE);
 			exit(0);
 		}
 	}
@@ -49,10 +57,10 @@ int main(int argc, char** argv)
 	{
 
 #ifdef WIN32
-		read_disk_raw("\\\\.\\G:", 128UL*1024UL*1024UL);
-	    // read_disk_raw("d:\\cessnaLogFull.dd", 128UL*1024UL*1024UL);
+		read_disk_raw("\\\\.\\G:", SDCARD_SIZE);
+	    // read_disk_raw("d:\\cessnaLogFull.dd", SDCARD_SIZE);
 #else
-		read_disk_raw("/dev/sdb", 128UL*1024UL*1024UL);
+		read_disk_raw("/dev/sdb", SDCARD_SIZE);
 #endif
 
 		exit(0);
@@ -114,12 +122,16 @@ void read_disk_raw(void)
 
 
 // Read from sector //
-void read_disk_raw(char* volume_name, unsigned long disk_size)
+void read_disk_raw(char* volume_name, uint64_t disk_size)
 {
     FILE *volume;
     int k = 0;
     char buf[BUFF_SIZE] = {0};
   
+	uint64_t sd = disk_size;
+	sd /= 1024UL * 1024UL;
+	printf("Expecting an SD-card of %lu MB.",sd);
+
     volume = fopen(volume_name, "r+b");
     if(!volume)
     {
@@ -138,20 +150,24 @@ void read_disk_raw(char* volume_name, unsigned long disk_size)
 
 	printf("\nSearching for logfiles in '%s': \n...\r",volume_name);
 
-	unsigned long addr = 0;
+	uint64_t addr = 0;
     // read what is in sector and put in buf //
 	while (addr < disk_size)
 	{
-		if(fseek(volume, addr, SEEK_SET) != 0)
+		if(_fseeki64(volume, addr, SEEK_SET) != 0)
 		{
 			printf("Cant move to sector\n");
 			return;
 		}
  
+		// Read BLOCK
 		size_t r = fread(buf, 1, BUFF_SIZE, volume);
 
+		// Start of block must contain <CODE 1A 1B 1C>
 		if (  ((unsigned char)buf[0] == 0x1a) && ((unsigned char)buf[1] == 0x1b) && ((unsigned char)buf[2] == 0x1c))
         {
+			/////////////////////////////////////////////////
+			// Start of new Logfile
             if ((unsigned char)buf[3] == 0xaa)
             {
 				int tt = 0;
@@ -193,6 +209,8 @@ void read_disk_raw(char* volume_name, unsigned long disk_size)
 	                printf("Log %d [#%d]: type [%x=%s] addr: <%ld> ",log, nr, tt, logtype, addr/1024);
 				cnt = 0;
             }
+			/////////////////////////////////////////////////
+			// Continued Logfile
             else if ((unsigned char)buf[3] == 0xbb)
             {
 				cnt++;
@@ -219,8 +237,14 @@ void read_disk_raw(char* volume_name, unsigned long disk_size)
 			}
 			if (cnt > 0)
 			{
-				printf("%d x 10k\nEnd <%ld>\n",cnt, addr/1024);
+				printf("%d x 10k\nFound End <%ld>\n",cnt, addr/1024);
 				cnt = 0;
+				break;
+				//addr = disk_size;
+			}
+			else
+			{
+				//printf("Cnt ==0\n");
 			}
     		//printf(".");
         }
@@ -236,6 +260,10 @@ void read_disk_raw(char* volume_name, unsigned long disk_size)
 		}
 
 		addr += BUFF_SIZE;
+
+		if (addr >= disk_size) {
+			printf("End of disk: cnt=%d <%ld><%ld>\n",cnt,addr,disk_size);
+		}
 		
 		//printf("\n %ld: %d %d %d ",addr, f, e, r);
 	}
