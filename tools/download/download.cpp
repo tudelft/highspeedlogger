@@ -9,14 +9,14 @@
 
 /********************  SETTINGS  ********************/
 // SDIO Settings
-#define BLOCK_SIZE              512UL   /* SD card block size in Bytes (512 for a normal SD card) */
+#define BLOCK_SIZE              512ULL   /* SD card block size in Bytes (512 for a normal SD card) */
 
 // Logger settings
-#define RX_BUFFER_NUM_BLOCKS    20UL /* 20 blocks * 512 = 10 KB RAM required per buffer*/
+#define RX_BUFFER_NUM_BLOCKS    20ULL /* 20 blocks * 512 = 10 KB RAM required per buffer*/
 
 
 // SD Card size
-#define SDCARD_SIZE	(1UL*1024UL*1024UL*1024UL)
+#define SDCARD_SIZE	(8ULL*1024ULL*1024ULL*1024ULL)
 
 /**************   END OF SETTINGS   *****************/
 
@@ -42,7 +42,7 @@ int main(int argc, char** argv)
 {
     printf("PARSE DISK:\n----------\n");
 	printf("highspeedloggerbinaryparser <DRIVE>     : eg. '/dev/sdb' or '\\\\.\\G:'  \n");
-	printf("highspeedloggerbinaryparser <DUMPFILE>  : eg. foo.diskdump \n");
+	printf("highspeedloggerbinaryparser <DUMPFILE>  : eg. foo.diskdump \n\n");
 
 	if (argc >= 2)
 	{
@@ -60,6 +60,8 @@ int main(int argc, char** argv)
 		read_disk_raw("\\\\.\\G:", SDCARD_SIZE);
 	    // read_disk_raw("d:\\cessnaLogFull.dd", SDCARD_SIZE);
 #else
+	//long long disk_size;
+	//ioctl(<disk_fd>, BLKGETSIZE64, &disk_size);
 		read_disk_raw("/dev/sdb", SDCARD_SIZE);
 #endif
 
@@ -120,17 +122,17 @@ void read_disk_raw(void)
 #endif
 
 
+void scan_all_blocks(FILE* volume, uint64_t disk_size);
 
 // Read from sector //
 void read_disk_raw(char* volume_name, uint64_t disk_size)
 {
     FILE *volume;
     int k = 0;
-    char buf[BUFF_SIZE] = {0};
   
 	uint64_t sd = disk_size;
 	sd /= 1024UL * 1024UL;
-	printf("Expecting an SD-card of %lu MB.",sd);
+	printf("\nExpecting an SD-card of %lu MB.\n",sd);
 
     volume = fopen(volume_name, "r+b");
     if(!volume)
@@ -140,18 +142,24 @@ void read_disk_raw(char* volume_name, uint64_t disk_size)
     }
     setbuf(volume, NULL);       // Disable buffering
 
-	// fseek(volume, 0, SEEK_END);
-	// long size = ftell(volume);
  
+	printf("\nSearching for logfiles in '%s': \n...\r",volume_name);
+
+	scan_all_blocks(volume, disk_size);
+
+    fclose(volume);
+ }
+
+void scan_all_blocks(FILE* volume, uint64_t disk_size)
+{
+    char buf[BUFF_SIZE] = {0};
+
 	int log = -1;
 	int cnt = 0;
 
 	FILE* of = 0;
 
-	printf("\nSearching for logfiles in '%s': \n...\r",volume_name);
-
 	uint64_t addr = 0;
-    // read what is in sector and put in buf //
 	while (addr < disk_size)
 	{
 		if(_fseeki64(volume, addr, SEEK_SET) != 0)
@@ -272,8 +280,5 @@ void read_disk_raw(char* volume_name, uint64_t disk_size)
     // for(k=0;k<BUFFER_SIZE;k++)
     //    printf("%02x ", (unsigned char) buf[k]);
  
-    fclose(volume);
- 
-    return;
 }
 
