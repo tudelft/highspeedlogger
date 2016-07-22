@@ -143,7 +143,7 @@ void read_disk_raw(char* volume_name, uint64_t disk_size)
 #else
 	long long sdcard_disk_size;
 	ioctl(volume, BLKGETSIZE64, &sdcard_disk_size);
-	disk_size /= 1024ULL * 1024 ULL;
+	sdcard_disk_size /= 1024ULL * 1024 ULL;
 	printf("Found an SG card of %lld:",sdcard_disk_size);
 #endif
 
