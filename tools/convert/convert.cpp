@@ -51,17 +51,19 @@ void parse_update_shift_buffer(char* buff)
 
 bool parse_spi_normal(char *buff, FILE* out, int shifted, bool test)
 {
+	bool skip_further_errors_in_block = false;
 	int offset = 64;
 	int *count = (int*) &buff[offset-shifted];	
 
-	int validate = 0;
+	int32_t validate = 0;
 	bool first_column_is_a_counter = true;
 
 	for (int j=offset;j<(BUFF_SIZE);j+= 64)
 	{
 		for (int col=0;col<16;col++)
 		{
-			int c = *count;
+			int32_t c = *count;
+			//wordswap_function((uint8_t*)&c);
 
 			// First column = counter
 			if (col == 0)
@@ -78,7 +80,25 @@ bool parse_spi_normal(char *buff, FILE* out, int shifted, bool test)
 					validate++;
 					if (c!= validate)
 					{
-						first_column_is_a_counter = false;
+						// if we just missed a sample, then 
+						if ((validate+1) == c) {
+							if (!test)
+							{
+								printf("<missing sample: %04X>", c);
+							}
+						}
+						else
+						{
+							if (first_column_is_a_counter) {
+								if (!test && !skip_further_errors_in_block)
+								{
+									printf("<nosync:found:%04X,expected:%04X>", c, validate);
+									skip_further_errors_in_block = true;
+								}
+							}
+							first_column_is_a_counter = false;
+						}
+						validate = c;
 					}
 				}
 			}
@@ -103,6 +123,23 @@ bool parse_spi_normal(char *buff, FILE* out, int shifted, bool test)
 	//	fprintf(out,"============================================================================================");
 
 	return first_column_is_a_counter;
+}
+
+void write_to_hex_file(char* buff, FILE* out)
+{
+	for (int i=0;i<64;i++)
+	{
+		//buff++;
+	}
+	for (int j=0;j<(BUFF_SIZE);j+=64)
+	{
+		for (int i=0;i<64;i++)
+		{
+			unsigned char c = (unsigned char) *buff++;
+			fprintf(out,"%02x ", (unsigned char) c);
+		}
+		fprintf(out,"\n");
+	}
 }
 
 
@@ -166,7 +203,7 @@ int main(int argc, char** argv)
 		}
 		else
 		{
-			sprintf(outfilename, "%s.csv", argv[1]);
+			sprintf(outfilename, "%s.hex", argv[1]);
 		}
 	}
 	else
@@ -221,6 +258,7 @@ int main(int argc, char** argv)
                 printf("? (%x)",(unsigned char)buff[3]);
             }
 
+			//logtype = 9;
 			switch(logtype)
 			{
 				// SPI
@@ -229,9 +267,10 @@ int main(int argc, char** argv)
 				{
 					static int cnt = 0;
 					// first correct byte order due to saving
+					// SDIO DMA device works with uin16_t
 					parse_wordswap(buff);
 
-					// then import/remember old data when data is shifted
+					// import/remember old data when data is shifted
 					parse_update_shift_buffer(buff);
 
 					// Finally parse
@@ -240,8 +279,9 @@ int main(int argc, char** argv)
 					if (! good)
 					{
 						printf("<nosync>");
+						fprintf(txt,"\n-----------------------\n\n");
 
-						for (int f=64-11;f<64-10;f++)
+						for (int f=0;f<64;f++)
 						{
 							good = parse_spi_normal(buff,stdout, f, true);
 							if (good)
@@ -272,6 +312,16 @@ int main(int argc, char** argv)
 				parse_uart_normal(buff,txt);
 				break;
 			default:
+
+				parse_wordswap(buff);
+				bool good = parse_spi_normal(buff,txt, shift_value, true);
+
+				if (! good)
+				{
+				write_to_hex_file(buff,txt);
+					printf("<nosync>");
+					fprintf(txt,"\n-----------------------\n\n");
+				}
 				break;
 			}
 
