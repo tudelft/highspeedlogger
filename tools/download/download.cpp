@@ -60,8 +60,6 @@ int main(int argc, char** argv)
 		read_disk_raw("\\\\.\\G:", SDCARD_SIZE);
 	    // read_disk_raw("d:\\cessnaLogFull.dd", SDCARD_SIZE);
 #else
-	//long long disk_size;
-	//ioctl(<disk_fd>, BLKGETSIZE64, &disk_size);
 		read_disk_raw("/dev/sdb", SDCARD_SIZE);
 #endif
 
@@ -130,10 +128,6 @@ void read_disk_raw(char* volume_name, uint64_t disk_size)
     FILE *volume;
     int k = 0;
   
-	uint64_t sd = disk_size;
-	sd /= 1024UL * 1024UL;
-	printf("\nExpecting an SD-card of %lu MB.\n",sd);
-
     volume = fopen(volume_name, "r+b");
     if(!volume)
     {
@@ -142,7 +136,19 @@ void read_disk_raw(char* volume_name, uint64_t disk_size)
     }
     setbuf(volume, NULL);       // Disable buffering
 
- 
+#ifdef WIN32
+	uint64_t sd = disk_size;
+	sd /= 1024UL * 1024UL;
+	printf("\nExpecting an SD-card of %lu MB.\n",sd);
+#else
+	long long sdcard_disk_size;
+	ioctl(volume, BLKGETSIZE64, &sdcard_disk_size);
+	disk_size /= 1024ULL * 1024 ULL;
+	printf("Found an SG card of %lld:",sdcard_disk_size);
+#endif
+
+
+
 	printf("\nSearching for logfiles in '%s': \n...\r",volume_name);
 
 	scan_all_blocks(volume, disk_size);
