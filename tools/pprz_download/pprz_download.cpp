@@ -180,6 +180,32 @@ void read_disk_raw(char* volume_name, unsigned long disk_size)
 		of = 0;
 	}
 
+    of = fopen("sd_log_fail.bin", "w+b");
+
+    log_size = 100000;
+    int err = 0;
+
+    // Read logfile
+    while (log_size > 0)
+    {
+      uint32_t readbytes = log_size;
+      if (readbytes > BLOCK_SIZE)
+        readbytes = BLOCK_SIZE;
+
+      size_t rdb = readbytes;
+      size_t r = fread(buf, 1, BLOCK_SIZE, volume);
+
+      printf("Read %08X %08X %d %d %d %d\r",addr, log_size, readbytes, r, err, errno);
+
+      readbytes = r;
+      fwrite(buf,1,readbytes,of);
+
+      log_size --;
+    }
+
+    fclose(of);
+    of = 0;
+
 
 
     fclose(volume);
