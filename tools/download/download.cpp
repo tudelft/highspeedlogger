@@ -7,6 +7,18 @@
 #include <fstream>
 #include <vector>
 
+#ifndef WIN32
+#define _FILE_OFFSET_BITS 64
+#define MYSEEK64 fseek
+#include <stdint.h>
+#include <fcntl.h>
+#include <sys/ioctl.h>
+#include <linux/fs.h>
+#undef BLOCK_SIZE
+#else
+#define MYSEEK64 _fseeki64
+#endif
+
 /********************  SETTINGS  ********************/
 // SDIO Settings
 #define BLOCK_SIZE              512ULL   /* SD card block size in Bytes (512 for a normal SD card) */
@@ -127,7 +139,25 @@ void read_disk_raw(char* volume_name, uint64_t disk_size)
 {
     FILE *volume;
     int k = 0;
-  
+
+#ifdef WIN32
+  uint64_t sd = disk_size;
+  sd /= 1024UL * 1024UL;
+  printf("\nExpecting an SD-card of %llu MB.\n",sd);
+#else
+  int fd = open(volume_name, O_RDONLY);
+
+  uint64_t sdcard_disk_size;
+  ioctl(fd, BLKGETSIZE64, &sdcard_disk_size);
+  //close(fd);
+  uint64_t sd = sdcard_disk_size / 1024ULL / 1024ULL;
+  printf("Found an SG card of %lu MB:",sd);
+  if (sd != 0)
+  {
+    disk_size = sdcard_disk_size;
+  }
+#endif
+
     volume = fopen(volume_name, "r+b");
     if(!volume)
     {
@@ -136,22 +166,9 @@ void read_disk_raw(char* volume_name, uint64_t disk_size)
     }
     setbuf(volume, NULL);       // Disable buffering
 
-#ifdef WIN32
-	uint64_t sd = disk_size;
-	sd /= 1024UL * 1024UL;
-	printf("\nExpecting an SD-card of %lu MB.\n",sd);
-#else
-	long long sdcard_disk_size;
-	ioctl(volume, BLKGETSIZE64, &sdcard_disk_size);
-	sdcard_disk_size /= 1024ULL * 1024 ULL;
-	printf("Found an SG card of %lld:",sdcard_disk_size);
-#endif
+    printf("\nSearching for logfiles in '%s': \n...\r",volume_name);
 
-
-
-	printf("\nSearching for logfiles in '%s': \n...\r",volume_name);
-
-	scan_all_blocks(volume, disk_size);
+    scan_all_blocks(volume, disk_size);
 
     fclose(volume);
  }
@@ -168,7 +185,7 @@ void scan_all_blocks(FILE* volume, uint64_t disk_size)
 	uint64_t addr = 0;
 	while (addr < disk_size)
 	{
-		if(_fseeki64(volume, addr, SEEK_SET) != 0)
+		if(MYSEEK64(volume, addr, SEEK_SET) != 0)
 		{
 			printf("Cant move to sector\n");
 			return;
