@@ -18,5 +18,6 @@
 
 tools/build
 tools/bin
-/hw/*.Harness
+hw/*.Harness
 sd_log_*.bin
+bin
