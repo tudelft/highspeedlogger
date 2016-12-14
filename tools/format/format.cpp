@@ -48,7 +48,7 @@ void format_disk_raw(char* volume_name)
 	printf("\nFormatting entire SDCard '%s': \n...\r",volume_name);
 
 
-	unsigned long addr = 0;
+	uint64_t addr = 0;
 
 	addr= 0x2000 * BLOCK_SIZE;
 
@@ -82,10 +82,10 @@ void format_disk_raw(char* volume_name)
 
 		if (f!=0)
 		{
-			printf("End of file system found at addr %X: \n",addr);
+			printf("End of file system found at addr %lluX: \n",addr);
 			break;
 		}
-		printf("Format succes until %ld: \n",addr);
+		printf("Format succes until %llu: \n",addr);
 
 		addr += BUFF_SIZE;
 	}

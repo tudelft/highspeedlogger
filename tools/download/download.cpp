@@ -151,7 +151,7 @@ void read_disk_raw(char* volume_name, uint64_t disk_size)
   ioctl(fd, BLKGETSIZE64, &sdcard_disk_size);
   //close(fd);
   uint64_t sd = sdcard_disk_size / 1024ULL / 1024ULL;
-  printf("Found an SG card of %lu MB:",sd);
+  printf("Found an SG card of %llu MB:",sd);
   if (sd != 0)
   {
     disk_size = sdcard_disk_size;
@@ -235,9 +235,9 @@ void scan_all_blocks(FILE* volume, uint64_t disk_size)
 				of = fopen(filename, "w+b");
 				fwrite(buf,1,BUFF_SIZE,of);
 				if (log > 0)
-					printf("%d x 10k\nLog %d [#%d]: type [%x=%s] addr: <%ld> ",cnt, log, nr, tt, logtype, addr/1024);
+					printf("%d x 10k\nLog %d [#%d]: type [%x=%s] addr: <%lld> ",cnt, log, nr, tt, logtype, addr/1024);
 				else
-	                printf("Log %d [#%d]: type [%x=%s] addr: <%ld> ",log, nr, tt, logtype, addr/1024);
+	                printf("Log %d [#%d]: type [%x=%s] addr: <%lld> ",log, nr, tt, logtype, addr/1024);
 				cnt = 0;
             }
 			/////////////////////////////////////////////////
@@ -268,7 +268,7 @@ void scan_all_blocks(FILE* volume, uint64_t disk_size)
 			}
 			if (cnt > 0)
 			{
-				printf("%d x 10k\nFound End <%ld>\n",cnt, addr/1024);
+				printf("%d x 10k\nFound End <%lld>\n",cnt, addr/1024);
 				cnt = 0;
 				break;
 				//addr = disk_size;
@@ -285,7 +285,7 @@ void scan_all_blocks(FILE* volume, uint64_t disk_size)
 
 		if (f!=0)
 		{
-			printf("%d x 10k\nEof <%ld>\n",cnt, addr/1024);
+			printf("%d x 10k\nEof <%lld>\n",cnt, addr/1024);
 			cnt = 0;
 			break;
 		}
@@ -293,7 +293,7 @@ void scan_all_blocks(FILE* volume, uint64_t disk_size)
 		addr += BUFF_SIZE;
 
 		if (addr >= disk_size) {
-			printf("End of disk: cnt=%d <%ld><%ld>\n",cnt,addr,disk_size);
+			printf("End of disk: cnt=%d <%lld><%lld>\n",cnt,addr,disk_size);
 		}
 		
 		//printf("\n %ld: %d %d %d ",addr, f, e, r);

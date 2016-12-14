@@ -229,7 +229,8 @@ void read_disk_raw(char* volume_name, unsigned long disk_size)
 		int f = feof(volume);
 		int e = ferror(volume);
 
-		printf("\nFailed to read (read: %lu) feof %d, ferror %d \n", r, f, e);
+		uint64_t print_size = (uint64_t) r;
+		printf("\nFailed to read (read: %llu) feof %d, ferror %d \n", print_size, f, e);
 
 		fclose(volume);
 		return;
@@ -291,7 +292,8 @@ void read_disk_raw(char* volume_name, unsigned long disk_size)
 			size_t rdb = readbytes;
 			size_t r = fread(buf, 1, BLOCK_SIZE, volume);
 
-			printf("Read %08lX %04X %d %lu %d %d\r", addr, log_size, readbytes, r, err, errno);
+			uint64_t print_size = (uint64_t) r;
+			printf("Read %08lX %04X %d %llu %d %d\r", addr, log_size, readbytes, print_size, err, errno);
 
 			readbytes = r;
 			fwrite(buf,1,readbytes,of);
@@ -309,7 +311,7 @@ void read_disk_raw(char* volume_name, unsigned long disk_size)
 	struct pprz_transport pprz;
 
 	char filename[32];
-	sprintf(filename, "sd_log_extra_unclosed.bin", log);
+	sprintf(filename, "sd_log_extra_unclosed.bin");
 	of = fopen(filename, "w+b");
 
 	while (pprz_valid)
