@@ -263,6 +263,7 @@ void read_disk_raw(char* volume_name, unsigned long disk_size)
 	for (uint8_t log=0; log < nr_of_logs; log++) {
 		uint32_t addr_log_start = big_endian( bufheader + 5 + 12*log );
 		uint32_t log_size = big_endian( bufheader + 5 + 4 + 12*log );
+		printf("Log" nr, addr_start, log_size, add_end\n");
 		printf("Log %04d,\t0x%04X\t0x%04X\t0x%04X\n", log, addr_log_start, log_size, (addr_log_start+log_size));
 
 		addr = addr_log_start * BLOCK_SIZE;
