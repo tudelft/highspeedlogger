@@ -18,6 +18,12 @@
 
 tools/build
 tools/bin
+tools/**/CMakeFiles
+tools/**/cmake_install.cmake
+tools/**/Makefile
 hw/*.Harness
 sd_log_*.bin
 bin
+
+sw/logger/*.elf
+sw/logger/*.bin

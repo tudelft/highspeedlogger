@@ -2,6 +2,7 @@
 #include <stdlib.h>
 
 #include <stdint.h>
+#include <unistd.h>
 
 #include <iostream>
 #include <fstream>
@@ -31,9 +32,6 @@
 #define SDCARD_SIZE	(8ULL*1024ULL*1024ULL*1024ULL)
 
 /**************   END OF SETTINGS   *****************/
-
-
-
 
 #define BUFF_SIZE  (BLOCK_SIZE*RX_BUFFER_NUM_BLOCKS)
 
@@ -141,21 +139,21 @@ void read_disk_raw(char* volume_name, uint64_t disk_size)
     int k = 0;
 
 #ifdef WIN32
-  uint64_t sd = disk_size;
-  sd /= 1024UL * 1024UL;
-  printf("\nExpecting an SD-card of %llu MB.\n",sd);
+	uint64_t sd = disk_size;
+	sd /= 1024ULL * 1024ULL;
+	printf("\nExpecting an SD-card of %llu MB.\n",sd);
 #else
-  int fd = open(volume_name, O_RDONLY);
+	int fd = open(volume_name, O_RDONLY);
 
-  uint64_t sdcard_disk_size;
-  ioctl(fd, BLKGETSIZE64, &sdcard_disk_size);
-  //close(fd);
-  uint64_t sd = sdcard_disk_size / 1024ULL / 1024ULL;
-  printf("Found an SG card of %llu MB:",sd);
-  if (sd != 0)
-  {
-    disk_size = sdcard_disk_size;
-  }
+	uint64_t sdcard_disk_size;
+	ioctl(fd, BLKGETSIZE64, &sdcard_disk_size);
+	close(fd);
+	uint64_t sd = sdcard_disk_size / 1024ULL / 1024ULL;
+	printf("Found an SG card of %llu MB:",sd);
+	if (sd != 0)
+	{
+		disk_size = sdcard_disk_size;
+	}
 #endif
 
     volume = fopen(volume_name, "r+b");
@@ -237,7 +235,7 @@ void scan_all_blocks(FILE* volume, uint64_t disk_size)
 				if (log > 0)
 					printf("%d x 10k\nLog %d [#%d]: type [%x=%s] addr: <%lld> ",cnt, log, nr, tt, logtype, addr/1024);
 				else
-	                printf("Log %d [#%d]: type [%x=%s] addr: <%lld> ",log, nr, tt, logtype, addr/1024);
+	                		printf("Log %d [#%d]: type [%x=%s] addr: <%lld> ",log, nr, tt, logtype, addr/1024);
 				cnt = 0;
             }
 			/////////////////////////////////////////////////
