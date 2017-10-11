@@ -2,23 +2,36 @@
 #include <stdlib.h>
 
 #include <stdint.h>
+#include <unistd.h>
 
 #include <iostream>
 #include <fstream>
 #include <vector>
 #include <sstream>
 
+#ifndef WIN32
+#define _FILE_OFFSET_BITS 64
+#define MYSEEK64 fseek
+#include <fcntl.h>
+#include <sys/ioctl.h>
+#include <linux/fs.h>
+#undef BLOCK_SIZE
+#else
+#define MYSEEK64 _fseeki64
+#endif
+
 /********************  SETTINGS  ********************/
 // SDIO Settings
-#define BLOCK_SIZE              512   /* SD card block size in Bytes (512 for a normal SD card) */
+#define BLOCK_SIZE              512ULL   /* SD card block size in Bytes (512 for a normal SD card) */
 
 // Logger settings
-#define RX_BUFFER_NUM_BLOCKS    20 /* 20 blocks * 512 = 10 KB RAM required per buffer*/
+#define RX_BUFFER_NUM_BLOCKS    20ULL /* 20 blocks * 512 = 10 KB RAM required per buffer*/
 /**************   END OF SETTINGS   *****************/
 
 #define BUFF_SIZE  (BLOCK_SIZE*RX_BUFFER_NUM_BLOCKS)
 
-const unsigned long disk_size = 128UL*1024UL*1024UL;
+// max card size supported is 8MB
+uint64_t disk_size = 8ULL*1024ULL*1024ULL*1024ULL;
 
 void format_disk_raw(char* volume_name)
 {
@@ -36,6 +49,27 @@ void format_disk_raw(char* volume_name)
 		return;
 	}
 
+#ifdef WIN32
+	uint64_t sd = disk_size;
+	sd /= 1024ULL * 1024ULL;
+	printf("\nExpecting an SD-card of %llu MB.\n",sd);
+#else
+	int fd = open(volume_name, O_RDONLY);
+
+	uint64_t sdcard_disk_size;
+	ioctl(fd, BLKGETSIZE64, &sdcard_disk_size);
+	close(fd);
+	uint64_t sd = sdcard_disk_size / 1024ULL / 1024ULL;
+	
+	if (sd != 0)
+	{
+		disk_size = sdcard_disk_size;
+		printf("Found an SG card of %llu MB %llu\n",sd, disk_size);
+	} else {
+		sd = disk_size / (1024ULL * 1024ULL);
+		printf("\nExpecting an SD-card of %llu MB.\n",sd);
+	}
+#endif
 
     volume = fopen(volume_name, "w+b");
     if(!volume)
@@ -46,22 +80,20 @@ void format_disk_raw(char* volume_name)
     setbuf(volume, NULL);       // Disable buffering
 
 	printf("\nFormatting entire SDCard '%s': \n...\r",volume_name);
-
+	sleep(3);
 
 	uint64_t addr = 0;
 
 	addr= 0x2000 * BLOCK_SIZE;
 
-	//printf("%u: ", addr);
-	if(fseek(volume, addr, SEEK_SET) != 0)
+	if(MYSEEK64(volume, addr, SEEK_SET) != 0)
 	{
-		printf("Cant move to sector\n");
+		printf("Can't move to sector\n");
 		fclose(volume);
 		return;
 	}
 
 	fwrite(buf, 5, 1, volume);
-
 
 	addr = 0;
     // read what is in sector and put in buf //
@@ -69,10 +101,10 @@ void format_disk_raw(char* volume_name)
 	{
 		printf(".");
 
-		if(fseek(volume, addr, SEEK_SET) != 0)
+		if(MYSEEK64(volume, addr, SEEK_SET) != 0)
 		{
-			printf("Cant move to sector\n");
-			return;
+			printf("Can't move to sector\n");
+			break;
 		}
  
 		fwrite(buf, 1, 1, volume);
@@ -85,7 +117,7 @@ void format_disk_raw(char* volume_name)
 			printf("End of file system found at addr %lluX: \n",addr);
 			break;
 		}
-		printf("Format succes until %llu: \n",addr);
+		printf("Format success until %llu: \n",addr);
 
 		addr += BUFF_SIZE;
 	}
@@ -93,7 +125,6 @@ void format_disk_raw(char* volume_name)
     fclose(volume);
  
     return;
-
 }
 
 int main(int argc, char** argv)
@@ -101,11 +132,9 @@ int main(int argc, char** argv)
 	char outfilename[2048] = "";
 
     printf("FORMAT SDCARD:\n-------------\n");
-	printf("highspeedloggerbinaryformat <DRIVE>     : eg. '/dev/sdb' or '\\\\.\\G:'  \n");
 
 	if (argc >= 2)
 	{
-
 		if (argc == 2)
 		{
 			format_disk_raw(argv[1]);
@@ -114,13 +143,8 @@ int main(int argc, char** argv)
 	}
 	else
 	{
-
-#ifdef WIN32
-		format_disk_raw("\\\\.\\G:");
-#else
-		format_disk_raw("/dev/sdb");
-#endif
-
+		printf("Please provide the disk drive you would like to format.\n");
+		printf("highspeedloggerbinaryformat <DRIVE>     : eg. '/dev/sdb' or '\\\\.\\G:'  \n");
 		exit(0);
 	}
 
