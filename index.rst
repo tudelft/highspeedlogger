@@ -4,18 +4,20 @@ High-Speed SD Logger
 
 .. toctree::
    :maxdepth: 2
-   :hidden:
 
    sw/README
 
 
-[![Build Status](https://travis-ci.org/tudelft/highspeedlogger.png?branch=master)](https://travis-ci.org/tudelft/highspeedlogger)
-
+.. image:: https://travis-ci.org/tudelft/highspeedlogger.png?branch=master
+   :target: https://travis-ci.org/tudelft/highspeedlogger
+   :alt: Travis Build
 
 The High-Speed SD Logger Project consists of 2 parts: 
 
- - a) dedicated hardware project using an STM32F4 with a custom 2 layer PCB + the firmware and required tools
- - b) tools to read raw data from an SD card connected directly to a https://github.com/paparazzi/paparazzi autopilot
+ - a) dedicated hardware project using an *STM32F4* with a custom 2 layer PCB + the firmware and required tools
+ - b) tools to read raw data from an **SD** card connected directly to a https://github.com/paparazzi/paparazzi autopilot
+
+.. note:: Do not mix up download and download_pprz
 
 Folders:
 
@@ -32,7 +34,10 @@ b)
 https://github.com/paparazzi/paparazzi/blob/master/conf/modules/logger_sd_spi_direct.xml
 
 
-Indices and tables
-==================
+Build with::
 
-* :ref:`search`
+   make
+
+	"A Quote"
+
+.. _GitHub: https://github.com/tudelft/highspeedlogger
