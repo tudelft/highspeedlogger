@@ -122,7 +122,7 @@ extern bool parse_pprz(struct pprz_transport *t, uint8_t c);
 
 // Start byte
 #define PPRZ_STX  0x99
-	
+
 // Parsing function
 bool parse_pprz(struct pprz_transport *t, uint8_t c)
 {
@@ -186,14 +186,16 @@ void read_disk_raw(char* volume_name, unsigned long disk_size)
     int k = 0;
     uint8_t buf[BUFF_SIZE] = {0};
     uint8_t bufheader[BUFF_SIZE] = {0};
-  
+
     volume = fopen(volume_name, "r+b");
     if(!volume)
     {
-        printf("Cant open Drive '%s'\n", volume_name);
-		fclose(volume);
-        return;
-    }
+			char error_message[50];
+			sprintf(error_message, "Can't open drive '%s'", volume_name);
+			perror(error_message); // This will output the reason for fopen failure to terminal
+			fclose(volume);
+			return;
+		}
     setbuf(volume, NULL);       // Disable buffering
 
 	int log = -1;
@@ -329,7 +331,7 @@ void read_disk_raw(char* volume_name, unsigned long disk_size)
 	fclose(of);
 
     fclose(volume);
- 
+
     return;
 }
 
