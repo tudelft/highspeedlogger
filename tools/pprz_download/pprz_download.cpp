@@ -191,7 +191,7 @@ void read_disk_raw(char* volume_name, unsigned long disk_size)
     if(!volume)
     {
 			char error_message[50];
-			sprintf(error_message, "Can't open drive '%s'", volume_name);
+			sprintf(error_message, "Can't open drive '%s' (make sure you are su)", volume_name);
 			perror(error_message); // This will output the reason for fopen failure to terminal
 			fclose(volume);
 			return;
