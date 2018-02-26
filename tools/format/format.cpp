@@ -118,7 +118,7 @@ void format_disk_raw(char* volume_name)
 		int e = ferror(volume);
 
 		if (addr > 0)
-			remaining = (time(0) - time_start) * (disk_size / addr - 1);
+			remaining = (time(0) - time_start) * ((float) disk_size / addr - 1);
 
 		if (f!=0)
 		{
