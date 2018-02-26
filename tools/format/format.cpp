@@ -8,6 +8,8 @@
 #include <fstream>
 #include <vector>
 #include <sstream>
+#include <time.h>
+#include <math.h>
 
 #ifndef WIN32
 #define _FILE_OFFSET_BITS 64
@@ -97,6 +99,9 @@ void format_disk_raw(char* volume_name)
 
 	addr = 0;
     // read what is in sector and put in buf //
+
+	time_t time_start = time(0);
+	float remaining = 0;
 	while (addr < disk_size)
 	{
 		printf(".");
@@ -112,12 +117,15 @@ void format_disk_raw(char* volume_name)
 		int f = feof(volume);
 		int e = ferror(volume);
 
+		if (addr > 0)
+			remaining = (time(0) - time_start) * (disk_size / addr - 1);
+
 		if (f!=0)
 		{
 			printf("End of file system found at addr %lluX: \n",addr);
 			break;
 		}
-		printf("Format success until %llu: \n",addr);
+		printf("Format success until %llu (%lluMB), Done: %llu%%, Time left: %02.0f:%02.0f:%02.0f\r", addr, addr/1000000, 100*addr/disk_size, remaining / 3600, fmod(remaining, 3600) / 60, fmod(remaining, 60.));
 
 		addr += BUFF_SIZE;
 	}
