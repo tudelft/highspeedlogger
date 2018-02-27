@@ -129,7 +129,7 @@ void format_disk_raw(char* volume_name)
 
 		addr += BUFF_SIZE;
 	}
- 
+	printf("\nDone\n");
     fclose(volume);
  
     return;
